@@ -1,3 +1,4 @@
+// 获取博客列表
 const getList = (author, keyword) => {
   // 先返回格式正确的假数据
   return [
@@ -17,6 +18,7 @@ const getList = (author, keyword) => {
   ]
 }
 
+// 获取详情列表
 const getDetail = (id) => {
   // 返回假数据
   return {
@@ -28,7 +30,16 @@ const getDetail = (id) => {
   }
 }
 
+// 新建博客
+const newBlog = (blogData = {}) => {
+  // blogData 是一个博客对象，包含 title，content 属性
+  return {
+    id: 3 // 表示新建的博客要插入数据表里面的第id项,将这个值返回给客户端
+  }
+}
+
 module.exports = {
   getList,
-  getDetail
+  getDetail,
+  newBlog
 }
