@@ -38,8 +38,24 @@ const newBlog = (blogData = {}) => {
   }
 }
 
+// 更新博客
+const updateBlog = (id, blogData={}) => {
+  // 现在只是返回假数据，其实还需要改变数据库中的内容
+  console.log(id, blogData)
+  return true
+}
+
+// 删除博客
+const deleteBlog = (id) => {
+  // 先返回假数据
+  console.log(id)
+  return true
+}
+
 module.exports = {
   getList,
   getDetail,
-  newBlog
+  newBlog,
+  updateBlog,
+  deleteBlog
 }

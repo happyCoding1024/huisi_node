@@ -1,7 +1,9 @@
 const { 
   getList,
   getDetail,
-  newBlog
+  newBlog,
+  updateBlog,
+  deleteBlog
 } = require('../controller/blog')  
 const { SuccessModel, ErrorModel } = require('./model/resModel') 
 
@@ -12,7 +14,9 @@ const handleBlogRouter = (req, res) => {
   const url = req.url
   // 获取路由
   const path = url.split('?')[0]
-  
+  // 获取文章的 id
+  const { id } = req.query
+
   // 实现接口
   // 1. 获取博客列表
   if (method === 'GET' && path === '/api/blog/list') {
@@ -23,7 +27,6 @@ const handleBlogRouter = (req, res) => {
   
   // 2. 获取博客详情
   if (method === 'GET' && path === '/api/blog/detail') {
-    const { id } = req.query
     const data = getDetail(id)
     return new SuccessModel(data)
   }
@@ -32,21 +35,20 @@ const handleBlogRouter = (req, res) => {
   if (method === 'POST' && path === '/api/blog/new') {
     const blogData = req.body
     const data = newBlog(blogData)
-    return SuccessModel(data)
+    return new SuccessModel(data)
   }
 
   // 4. 更新博客
   if (method === 'POST' && path === '/api/blog/update') {
-    return {
-      'msg': '这是更新博客的接口'
-    }
+    // 更新博客不仅需要postdata还需要id，id是通过querystring传递的
+    const result = updateBlog(id, req.body)
+    return result ? new SuccessModel(result) : new ErrorModel(result)
   }
 
   // 5. 删除博客
   if (method === 'POST' && path === '/api/blog/delete') {
-    return {
-      'msg': '这是删除博客的接口'
-    }
+    const result = deleteBlog(id)
+    return result ? new SuccessModel(result) : new ErrorModel
   }
 
 }
