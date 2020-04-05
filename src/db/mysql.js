@@ -7,13 +7,14 @@ const con = mysql.createConnection(MYSQL_CONF)
 // 开始连接
 con.connect()
 
-// 统一执行 sql 的函数
+// 使用回调函数
 // function exec(sql) {
 //   con.query(sql, (err, result) => {
 //     return err ? err : result
 //   })
 // }
 
+// 使用 promise
 function exec(sql) {
   return new Promise((resolve, reject) => {
     con.query(sql, (err, result) => {
