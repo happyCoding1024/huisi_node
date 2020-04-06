@@ -3,7 +3,7 @@ const {
   getDetail,
   newBlog,
   updateBlog,
-  deleteBlog
+  delBlog
 } = require('../controller/blog')  
 const { SuccessModel, ErrorModel } = require('./model/resModel') 
 
@@ -30,31 +30,38 @@ const handleBlogRouter = (req, res) => {
 
   // 实现接口
   // 1. 获取博客列表
-  if (method === 'GET' && path === '/api/blog/list') {
-    let { author, keyword, isadmin } = req.query
-    const res_prm = getList(author, keyword)
-    if (isadmin) {
-      // 管理员界面
+  if(method === 'GET' && req.path === '/api/blog/list') {
+
+    let author = req.query.author || ''; // 获取到传入的作者名，如果没有传入赋值为空字符串
+    const keyword = req.query.keyword || '';
+
+    // 加一个验证，必须登录之后才可以看到博客列表而且只能看到自己的博客列表
+    if (req.query.isadmin) {
+      // 登录验证
       if (loginCheckResult) {
         // 未登录
-        return loginCheckResult
+        return loginCheckResult;
       }
+      // 已登录
+      // 强制只能查自己的博客列表
+      // 解释一下为什么下面这一条语句就能做到强制只能查询自己的博客列表，req.session.name是在用户登录时赋值的，登录时用户名是什么，它的值就是什么
+      // 客户端是没有办法改的，将这个值直接赋给author，可以保证登录的那个人可以查看自己的但是查不了别人的，因为author始终是自己
+      author = req.session.username;
     }
-    // 强制查询自己的博客，在url中输入别人的名字是无效的
-    // author = req.session.username
-    // acthor = 'lisi'
-    // .then 方法返回的也是一个promise对象，在回调函数中 SucessModel(listData) 将会当做它的then方法的参数
-    return res_prm.then((listData) => {
-      return new SuccessModel(listData)
-    })
 
+    const result = getList(author, keyword); // getList 返回一个promise对象
+    return result.then((listData) => {
+      return new SuccessModel(listData);
+    }, (err) => {
+      console.log(err);
+    })
   }
   
   // 2. 获取博客详情
   if (method === 'GET' && path === '/api/blog/detail') {
     const res_prm = getDetail(id)
     return res_prm.then((blogDetail) => {
-      return new SuccessModel(blogDetail)
+      return new SuccessModel(blogDetail[0])
     })
   }
 
@@ -64,13 +71,12 @@ const handleBlogRouter = (req, res) => {
     if (loginCheckResult) {
       return loginCheckResult
     } 
-    req.body.author = req.session.username // 假数据，登录实现时登录的是谁作者就是谁
+    req.body.author = req.session.username 
     const blogData = req.body
     const res_prm = newBlog(blogData)
     return res_prm.then(blogId => {
       return new SuccessModel(blogId)
     }) 
-
   }
 
   // 4. 更新博客
@@ -87,16 +93,23 @@ const handleBlogRouter = (req, res) => {
   }
 
   // 5. 删除博客
-  if (method === 'POST' && path === '/api/blog/delete') {
-    // 如果有返回值说明是未登录状态此时return终止后面代码的执行
-    if (loginCheckResult) {
-      return loginCheckResult
-    }     
-    const author = req.session.username
-    const res_prm = deleteBlog(id, author)
-    return res_prm.then(deleteStatus => {
-      return deleteStatus ? new SuccessModel() : new ErrorModel()
-    })
+  if (method === 'POST' && path === '/api/blog/del') {
+    
+    // 如果 loginCheckResult 有值说明没有登录
+    if(loginCheckResult) {
+      return loginCheckResult;
+    }
+
+    const author = req.session.username;
+    // 在删除文章的时候校验一下作者，只有登录的作者本人才可以删除自己的文章
+    const result = delBlog(id, author);
+    return result.then((val) => {
+       if (val) {
+         return new SuccessModel();
+       } else {
+         return new ErrorModel('delete fail');
+       }
+   })
   }
 
 }

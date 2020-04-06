@@ -1,8 +1,6 @@
 const { login } = require('../controller/user.js')
 const { SuccessModel, ErrorModel } = require('./model/resModel')
-
-// 设置登录状态
-global.loginStatus = false
+const { set, get } = require('../db/redis')
 
 // 设置 cookie 过期时间
 const getCookieExpires = () => {  
@@ -31,15 +29,13 @@ const handleUserRouter = (req, res) => {
       // 这个地方必须判断loginData是否存在，如果不存在读取username会报错
       if (loginData) {
         req.session.username = loginData.username
-        loginStatus = true
         console.log(' login 中 req.session = ', req.session)
         // 设置session
-        // set(req.sessionId, req.session)
+        set(req.sessionId, req.session)
         return new SuccessModel()
       } else {
         return new ErrorModel('登录失败')
       }
-      
     })
   }
 

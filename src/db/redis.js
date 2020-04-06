@@ -2,7 +2,8 @@ const { REDIS_CONF } = require('../conf/db')
 const redis = require('redis')
 
 // 创建 redis 客户端
-const redisClient = redis.createClient(REDIS_CONF.port, REDIS_CONF.host)
+// const redisClient = redis.createClient(REDIS_CONF.port, REDIS_CONF.host)
+const redisClient = redis.createClient('6379', '127.0.0.1')
 
 redisClient.on('error', err => {
   console.error(err)
@@ -11,7 +12,7 @@ redisClient.on('error', err => {
 
 // 封装 set 函数
 function set(key, val) {
-  if (val === Object) {
+  if ( typeof val === 'object') {
     val = JSON.stringify(val)
   }
   redisClient.set(key, val, redis.print)
@@ -39,6 +40,12 @@ function get(key) {
     })
   })
 }
+
+// 测试 set 和 get 函数
+// set(123456, { a: 1});
+// get(123456).then(res => {
+//   console.log(res)
+// })
 
 module.exports = {
   set,

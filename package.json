@@ -13,7 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.15",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
