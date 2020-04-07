@@ -24,7 +24,9 @@ const handleUserRouter = (req, res) => {
   // 登录
   if (method === 'POST' && path === '/api/user/login') {
     const { username, password } = req.body
+    // const { username, password } = req.query
     const res_prm = login(username, password)
+    console.log('username = ', username)
     return res_prm.then(loginData => {
       // 这个地方必须判断loginData是否存在，如果不存在读取username会报错
       if (loginData) {

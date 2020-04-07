@@ -2,19 +2,38 @@ const { exec } = require('../db/mysql')
 
 // 获取博客列表
 const getList = (author, keyword) => {
-  let sql = `select * from blogs where 1=1 `
+  let sql_blog = `select * from blogs where 1=1 `
   if (author) {
-    sql += `and author = '${author}' `
+    sql_blog += `and author = '${author}' `
   }
   if (keyword) {
-    sql += `and title like '%${keyword}%' `
+    sql_blog += `and title like '%${keyword}%' `
   }
-  sql += 'order by createtime desc;' 
+  sql_blog += 'order by createtime desc;'
+
+  let sql_topic = `select * from topiclist where 1=1 `
+  if (author) {
+    sql_topic +=`and author = '${author}'`
+  }
+  // 获取博客列表和topic列表
+  // 一定要注意同步和异步编程时的区别，下面的写法的思想要记住
+  // 异步的执行顺序并不一定是代码的书写顺序
+  let homeList = {}
+  return exec(sql_blog).then(articleList => {
+    return exec(sql_topic).then(topicList => {
+      homeList = {
+        articleList,
+        topicList
+      }
+      return Promise.resolve(homeList)
+    })
+  })
+  // 获取 Topic 列表，前端中显示在主页图片下方 
   // 返回的是一个promise
   return exec(sql)
 }
 
-// 获取详情列表
+// 获取详情
 const getDetail = (id) => {
   let sql = `select * from blogs where 1=1 `
   if (id) {
@@ -56,7 +75,6 @@ const delBlog = (id, author) => {
   const sql = `
    delete from blogs where id ='${id}' and author = '${author}';
   `;
-  console.log(sql)
   return exec(sql).then((deleteData) => {
     if (deleteData.affectedRows > 0) {
       return true;
@@ -64,6 +82,7 @@ const delBlog = (id, author) => {
     return false;
   });
 };
+
 
 module.exports = {
   getList,

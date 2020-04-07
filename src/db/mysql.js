@@ -14,6 +14,7 @@ con.connect()
 //   })
 // }
 
+const sql = `select * from blogs;`
 // 使用 promise
 function exec(sql) {
   return new Promise((resolve, reject) => {
