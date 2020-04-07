@@ -1,5 +1,6 @@
 const handleBlogRouter = require('./src/router/blog')
 const handleUserRouter = require('./src/router/user')
+const handleHeaderRouter = require('./src/router/header')
 const querystring = require('querystring')
 const { set, get } = require('./src/db/redis')
 const { access } = require('./src/utils/log')
@@ -23,7 +24,8 @@ const getPostData = (req) => {
       return
     }
     // 在使用原生node开发时暂时只支持json格式的Postdata，其它格式的用原生支持起来比较麻烦，但是用框架时很容易地就可以支持了
-    if (req.headers['content-type'] !== 'application/json') {
+    // 在浏览器端使用axios发送POST请求时，req.headers['content-type']等于'application/json;charset=UTF-8'
+    if (req.headers['content-type'] !== 'application/json' && req.headers['content-type'] !== 'application/json;charset=UTF-8') {
       resolve({})
       return 
     }
@@ -114,7 +116,7 @@ const serverHandle = (req, res) => {
     return getPostData(req)
   }).then((postData) => {
     req.body = postData;
-    console.log('req.body', req.body);
+    console.log('req.body = ', req.body);
     // 处理 blog 路由
     const blogResult = handleBlogRouter(req, res);
     if (blogResult) {
@@ -141,6 +143,20 @@ const serverHandle = (req, res) => {
         );
       });
       return;
+    }
+
+    // 处理 header 路由
+    const headerResult = handleHeaderRouter(req, res);
+    if (headerResult) {
+      headerResult.then(headerData => {
+        if (needSetCookie) {
+          res.setHeader('Set-Cookie', `userid=${userId}; path=/; htppOnly; expires=${getCookieExpires()}`);
+        }
+        res.end(
+          JSON.stringify(headerData)
+        );
+      });
+      return;       // 一次请求一般只能是一个url，所以如果是blog请求，那么处理完blog请求之后就没必要再进行user的请求了。
     }
 
     // 未命中路由，返回404
