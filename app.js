@@ -23,6 +23,7 @@ const getPostData = (req) => {
       resolve({})
       return
     }
+    console.log("req.headers['content-type'] = ", req.headers['content-type'])
     // 在使用原生node开发时暂时只支持json格式的Postdata，其它格式的用原生支持起来比较麻烦，但是用框架时很容易地就可以支持了
     // 在浏览器端使用axios发送POST请求时，req.headers['content-type']等于'application/json;charset=UTF-8'
     if (req.headers['content-type'] !== 'application/json' && req.headers['content-type'] !== 'application/json;charset=UTF-8') {
@@ -117,6 +118,7 @@ const serverHandle = (req, res) => {
   }).then((postData) => {
     req.body = postData;
     console.log('req.body = ', req.body);
+    console.log('req = ', req);
     // 处理 blog 路由
     const blogResult = handleBlogRouter(req, res);
     if (blogResult) {
