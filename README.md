@@ -1,27 +1,14 @@
-# 慧思博客_前端
+# 慧思博客_后端
 
 ## 介绍
 
-慧思博客_前端是学习 React 过程中做的一个简化的博客系统，后端使用 Node.js 编写，实现的功能前后端已经进行了联调测试。
-
+慧思博客_后端使用 Node.js 编写，实现的功能前后端已经进行了联调测试。
 
 慧思博客主页(2020.04.09)
 
 ![慧思博客项目主页](https://raw.githubusercontent.com/happyCoding1024/image-hosting/master/img/Github慧思博客主页照片900_400.png)
 
 ## 项目运行
-
-### 前端
-
-> 只能展示部分功能，因为需要用到后端的数据
-
-1）将 huisiblog 仓库 clone 到本地
-
-2）进入 huisiblog 目录打开命令行窗口，运行 `npm install` 安装依赖。（注意命令行窗口的地址必须是 huisiblog 目录，window 用户在进入 huisiblog 目录后，按住 shift 右键在弹出的对话框中选择在此处打开命令行窗口即可）
-
-3）依赖安装完成后，接着运行 `npm run start` 即可。
-
-### 前后端联调
 
 1）将 huisiblog 和 huisi_node 两个仓库 clone 到本地
 
