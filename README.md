@@ -100,7 +100,7 @@
 
 联系方式：
 
-- 在 [github issues](https://github.com/happyCoding1024/huisiblog/issues) 提交问题
+- 在 [github issues](https://github.com/happyCoding1024/huisi_node) 提交问题
 
 - [博客园 codingOrange](https://www.cnblogs.com/zhangguicheng/)
 
