@@ -65,16 +65,6 @@
 - [x] 键盘导航
 - [x] 回到顶部
 
-## TodoList
-
-- [ ] 点赞，评论
-- [ ] 留言
-- [ ] 阅读数统计
-- [ ] 标签分类
-- [ ] 文章分类
-- [ ] 分页显示
-- [ ] ...
-
 ## UpdateLog & IssueLog
 
 [updateIssueLog](doc/dev/updateIssueLog.md)
