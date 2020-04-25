@@ -25,3 +25,7 @@ yarn-error.log*
 .vscode/
 
 debugger-test/
+
+package-lock.json
+
+/test
