@@ -67,6 +67,8 @@
 
 ## UpdateLog & IssueLog
 
+记录新增的功能，修正的 bug，解决问题的方法，TodoList，开发感悟等。
+
 [updateIssueLog](doc/dev/updateIssueLog.md)
 
 ## 联系作者
