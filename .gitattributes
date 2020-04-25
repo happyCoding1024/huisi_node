@@ -1,0 +1,5 @@
+*.js linguist-language=javascript
+*.css linguist-language=javascript
+*.html linguist-language=javascript
+*.md linguist-language=javascript 
+*.vim linguist-language=javascript
