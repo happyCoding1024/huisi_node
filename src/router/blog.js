@@ -30,7 +30,7 @@ const handleBlogRouter = (req, res) => {
 
   // 实现接口
   // 1. 获取博客列表
-  if(method === 'GET' && req.path === '/api/blog/list') {
+  if(method === 'GET' && (req.path === '/api/blog/list' || req.path === '/api/blog/list.json')) {
 
     let author = req.query.author || ''; // 获取到传入的作者名，如果没有传入赋值为空字符串
     const keyword = req.query.keyword || '';

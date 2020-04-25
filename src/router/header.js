@@ -10,7 +10,7 @@ const handleHeaderRouter = (req, res) => {
   const path = url.split('?')[0]
   
   // 获取headerList
-  if (method === 'GET' && path === '/api/header/headerList') {
+  if (method === 'GET' && path === '/api/header/headerList.json') {
     const result = getHeaderList()
     return result.then((val) => {
       return new SuccessModel(val)

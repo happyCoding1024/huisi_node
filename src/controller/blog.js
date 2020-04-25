@@ -46,7 +46,9 @@ const getDetail = (id) => {
 const newBlog = (blogData = {}) => {
   // blogData 是一个博客对象，包含 title，content 属性，新建博客是需要提供作者，作者是登录时获得的
   const { title, content, author } = blogData
-  let sql = `insert into blogs (title, content, createtime, author) values ('${title}', '${content}', '${Date.now()}', '${author}')`
+  const abstract = content
+  let sql = `insert into blogs (title, content, createtime, author, abstract) values ('${title}', '${content}', '${Date.now()}', '${author}', '${abstract}')`
+  console.log('sql = ', sql)
   return exec(sql).then(insertData => {
     return {
       id: insertData.insertId

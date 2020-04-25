@@ -1,4 +1,4 @@
-const { login } = require('../controller/user.js')
+const { login, register } = require('../controller/user')
 const { SuccessModel, ErrorModel } = require('./model/resModel')
 const { set, get } = require('../db/redis')
 
@@ -26,7 +26,6 @@ const handleUserRouter = (req, res) => {
     const { username, password } = req.body
     // const { username, password } = req.query
     const res_prm = login(username, password)
-    console.log('username = ', username)
     return res_prm.then(loginData => {
       // 这个地方必须判断loginData是否存在，如果不存在读取username会报错
       if (loginData) {
@@ -37,6 +36,20 @@ const handleUserRouter = (req, res) => {
         return new SuccessModel()
       } else {
         return new ErrorModel('登录失败')
+      }
+    })
+  }
+
+  // 注册
+  if (method === 'POST' && path === '/api/user/register') {
+    const { username, password } = req.body
+    const res_prm = register(username, password)
+    return res_prm.then(registerStatus => {
+      // 这个地方必须判断loginData是否存在，如果不存在读取username会报错
+      if (registerStatus) {
+        return new SuccessModel()
+      } else {
+        return new ErrorModel('注册失败')
       }
     })
   }

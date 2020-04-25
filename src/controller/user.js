@@ -1,5 +1,6 @@
 const { exec } = require('../db/mysql')
 
+// 登录
 const login = (username, password) => {
   const sql = `select username, \`password\` from users where username='${username}' and password='${password}';`;
   // select查询结果都是一个数组
@@ -14,6 +15,33 @@ const login = (username, password) => {
   })
 }
 
+// 注册
+const register = (username, password) => {
+  const sql = `insert into users (username, \`password\`) values ('${username}', '${password}');`
+  const sql_check = `select * from users where username = '${username}'`
+  // select查询结果都是一个数组
+  return exec(sql_check).then(registerSameName=> { 
+    console.log('registerSameName = ', registerSameName) 
+    // sql查询返回的结果是一个数组，如果是空数组说明没有重名的，就继续执行插入
+    // 注意对于引用类型数据而言，空数组并不等于空数组，因为两个数组的引用时不同的，所以下面不能利用 registerSameName===[]作为判断条件
+    // 在这里当查询不到时返回一个空数组，可以利用registerSameName[0]作为判断条件，如果没有重名的那么它的值为undefined
+    if (!registerSameName[0]) {
+      return exec(sql).then(result => {
+        console.log('注册 result = ', result)
+        if (result.affectedRows === 1) {
+          return Promise.resolve(true)
+        } else {
+          return Promise.resolve(false)
+        }
+      })
+    } else {
+      return Promise.resolve(false)
+    }
+
+  })
+}
+
 module.exports = { 
-  login
+  login,
+  register
 }
