@@ -1,6 +1,12 @@
 # 慧思博客_后端
 
+<div align=center>
+  <img src="https://raw.githubusercontent.com/happyCoding1024/image-hosting/master/img/huisiBrand200_Github.png" style="margin-right:20px;"/>
+</div>
+
 ## 介绍
+
+> 慧思：智慧和思考，特意去百度搜了一遍，发现没有用这个名字的，虽然听起来没有那么高雅，但寓意好呀。
 
 慧思博客_后端使用 Node.js 编写，实现的功能前后端已经进行了联调测试。
 
