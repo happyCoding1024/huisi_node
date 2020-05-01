@@ -4,7 +4,7 @@
 
 慧思博客_后端使用 Node.js 编写，实现的功能前后端已经进行了联调测试。
 
-慧思博客主页(2020.04.09)
+慧思博客主页
 
 ![慧思博客项目主页](https://raw.githubusercontent.com/happyCoding1024/image-hosting/master/img/Github慧思博客主页照片900_400.png)
 
